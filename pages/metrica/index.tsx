@@ -1,69 +1,93 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Cabecalho from '../../components/Layout/Interno/Cabecalho';
-import Tabela from '../../components/Tabela/Tabela';
+import TabelaMetrica from '../../components/Tabela/TabelaMetrica';
 import { generica } from '../../utils/api';
+import { toast } from 'react-toastify';
 
 const dadosCabecalho = {
   titulo: "Métricas",
   migalha:[
     {nome:'Mapa', link:'/'},
-    {nome:'Métricas', link:'/metricas'},
+    {nome:'Métricas', link:null},
   ]
 }
 
-const dadosTabela = {
-    cabecalho:[
-      {nome:"Nome"},
-      {nome:"Descrição"}
-    ],
-    registros: [
-      // { nome: 'Produto 1', detalhes: 'Descrição do Produto 1' },
-      // { nome: 'Produto 2', detalhes: 'Descrição do Produto 2' },
-      // { nome: 'Produto 3', detalhes: 'Descrição do Produto 3' }
-    ],
-    acoes:[
-      {tipo:"link", nome:"Editar",uri:"metrica/edit/",passarID:true, metodo:'get', title: "Editar métrica", posAcao:null},
-      {tipo:"acao", metodo:'delete',uri:'/metrica/',passarID:true, params:{},data:{}, nome:"Deletar", title: "Deletar métrica",posAcao:"atualizar"}
-    ],
-    externo:[
-      {tipo:"link", cor:"azul", nome:"Adicionar", uri:"metrica/edit/0", passarID:false, title: "Adicionar nova métrica"}
-    ],
-    pesquisar:{
-      link:"metrica/search"
-    },
-    request:{
-      listar:{
-        metodo:'get', uri:'/metrica', params:{size: 25}, data:{}
-      }
-    },
-    retorno:{}
-};
-
-export default function IndexPage() {
-  const [registros, setRegistros] = useState([]);
+const Lista = () => {
+  const router = useRouter();
+  const [dados, setDados] = useState({ content: [] });
 
   useEffect(() => {
-    const fetchRegistros = async () => {
-      let body = {
-        metodo:'get',
-        uri:'/metrica',
-        params:{size: 25},
-        data:{}
-     }
-      const data = await generica(body);
-      // dadosTabela.registros = data.content;
-      dadosTabela.retorno = data.data;
-      setRegistros(data);
-    };
-    fetchRegistros();
+    carregarRegistros();
   }, []);
 
+  // Função para carregar os dados
+  const carregarRegistros = async () => {
+    try {
+      let body = {
+        metodo: 'get',
+        uri: '/metrica',
+        params: { size: 25 },
+        data: {}
+      }
+      const response = await generica(body);
+      //tratamento dos erros
+      if(response.data.errors != undefined){
+        toast("Erro. Tente novamente!",{position: "bottom-left"});
+      }else if(response.data.error != undefined){
+        toast(response.data.error.message,{position: "bottom-left"});
+      }else{
+        setDados(response.data);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar registros:', error);
+    }
+  };
+
+  // Função que redireciona para a tela adicionar registro
+  const IrParaTelaAdicionarRegistro = () => {
+    router.push('/metrica/edit/undefined');
+  };
+  // Função que redireciona para a tela editar registro
+  const IrParaTelaEditarRegistro = (item) => {
+    router.push('/metrica/edit/'+item.id);
+  };
+
+  // Função que deleta um registro
+  const deletarRegistro = async (item) => {
+    try {
+      let body = {
+        metodo: 'delete',
+        uri: '/metrica/'+item.id,
+        params: {},
+        data: {}
+      }
+      const response = await generica(body);
+      //tratamento dos erros
+      if(response.data.errors != undefined){
+        toast("Erro. Tente novamente!",{position: "bottom-left"});
+      }else if(response.data.error != undefined){
+        toast(response.data.error.message,{position: "bottom-left"});
+      }else{
+        toast("Registro deletado com sucesso!",{position: "bottom-left"});
+        carregarRegistros();
+      }
+    } catch (error) {
+      console.error('Erro ao carregar registros:', error);
+    }
+  };
+
   return (
-    <main className="p-8 flex flex-wrap mx-auto justify-center">
-      <div className='w-full md:w-4/5 2xl:w-1/2'>
-        <Cabecalho dados={dadosCabecalho}/>
-        <Tabela dados={dadosTabela} />
-      </div>
-    </main>
+      <main className="p-8 flex flex-wrap mx-auto justify-center">
+        <div className='w-full md:w-4/5 2xl:w-1/2'>
+          <Cabecalho dados={dadosCabecalho}/>
+          <TabelaMetrica dados={dados} 
+                  IrParaTelaAdicionarRegistro={IrParaTelaAdicionarRegistro} 
+                  IrParaTelaEditarRegistro={IrParaTelaEditarRegistro} 
+                  deletarRegistro={deletarRegistro} />
+        </div>
+      </main>
   );
-}
+};
+
+export default Lista;
