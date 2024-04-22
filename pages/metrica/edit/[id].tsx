@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import { generica } from '../../../utils/api';
 import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const dadosCabecalho = {
   titulo: "Métricas",
@@ -55,33 +56,52 @@ const Editar = () => {
     */
     const salvarRegistro = async (event: { preventDefault: () => void; }) => {
         event.preventDefault();
+    
+        // Exibir o SweetAlert2 para confirmação
+        const confirmacao = await Swal.fire({
+            title: "Você deseja salvar essa métrica?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sim, quero salvar!",
+            cancelButtonText: "Cancelar"
+        });
+    
+        // Verificar se o usuário confirmou
+        if (confirmacao.isConfirmed) {
+            try {
+                const metodo = id !== 'undefined' ? 'patch' : 'post';
+                const uri = id !== 'undefined' ? `/metrica/${id}` : '/metrica';
+                // Corpo da requisição
+                const body = {
+                    metodo,
+                    uri,
+                    data: { nome, detalhes }
+                };
+                // Requisição
+                const response = await generica(body);
+                // Tratamento dos erros
+                if (response.data.errors !== undefined) {
+                    toast("Verifique os campos e tente novamente!", { position: "bottom-left" });
+                    setMensagemErro(response.data.errors);
+                } else if (response.data.error !== undefined) {
 
-        try {
-            const metodo = id != 'undefined' ? 'patch' : 'post';
-            const uri = id != 'undefined' ? `/metrica/${id}` : '/metrica';
-            //corpo da requisicao
-            const body = {
-                metodo,
-                uri,
-                data: { nome, detalhes }
-            };
-            //requisicao
-            const response = await generica(body);
-            //tratamento dos erros
-            if(response.data.errors != undefined){
-              toast("Verifique os campos e tente novamente!",{position: "bottom-left"});
-              setMensagemErro(response.data.errors);
-            }else if(response.data.error != undefined){
-              toast(response.data.error.message,{position: "bottom-left"});
-            }else{
-              toast(id != 'undefined' ? "Atualizado com sucesso!" : "Cadastrado com sucesso!",{position: "bottom-left"});
-              router.push('/metrica');
+                  toast(response.data.error.message,{position: "bottom-left"});
+                } else {
+                    Swal.fire({
+                        title: "Métrica salva com sucesso",
+                        icon: "success"
+                    });
+                    router.push('/metrica');
+                }
+            } catch (error) {
+                toast('Erro ao salvar dados: ' + error, { position: "bottom-left" });
+                console.error('Erro ao salvar dados:', error);
             }
-        } catch (error) {
-          toast('Erro ao salvar dados: '+error,{position: "bottom-left"});
-          console.error('Erro ao salvar dados:', error);
         }
     };
+        
 
     /*  
       handleNomeChange :

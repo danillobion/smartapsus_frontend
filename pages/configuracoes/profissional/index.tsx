@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Cabecalho from '../../components/Layout/Interno/Cabecalho';
-import TabelaMetrica from '../../components/Tabela/Metrica';
-import { generica } from '../../utils/api';
+import Cabecalho from '@/components/Layout/Interno/Cabecalho';
+import TabelaProfissional from '@/components/Tabela/Profissional';
+import { generica } from '@/utils/api';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
-interface Item {
-  id: string;
-}
+const uri = "profissional";
 
 const dadosCabecalho = {
-  titulo: "Métricas",
+  titulo: "Profissionais",
   migalha:[
     {nome:'Mapa', link:'/'},
-    {nome:'Métricas', link:null},
+    {nome:'Configurações', link:null},
+    {nome:'Profissionais', link:null},
   ]
 }
 
@@ -31,8 +30,9 @@ const Lista = () => {
     try {
       let body = {
         metodo: 'get',
-        uri:'/metrica',
-        params: params != null ? params : { size: 25, page:0, nome:null, detalhes:null },
+        uri: '/'+uri,
+
+        params: params != null ? params : { size: 25, page:0},
         data: {}
       }
       const response = await generica(body);
@@ -51,17 +51,17 @@ const Lista = () => {
 
   // Função que redireciona para a tela adicionar registro
   const IrParaTelaAdicionarRegistro = () => {
-    router.push('/metrica/edit/undefined');
+    router.push('/configuracoes/profissional/edit/undefined');
   };
   // Função que redireciona para a tela editar registro
-  const IrParaTelaEditarRegistro = (item: Item) => {
-    router.push('/metrica/edit/'+item.id);
+  const IrParaTelaEditarRegistro = (item) => {
+    router.push('/configuracoes/profissional/edit/'+item.id);
   };
 
   // Função que deleta um registro
   const deletarRegistro = async (item: Item) => {
     const confirmacao = await Swal.fire({
-      title: "Você deseja deletar essa métrica?",
+      title: "Você deseja deletar o profissional " + item.nome + "?",
       text: "Essa ação não poderá ser desfeita",
       icon: "warning",
       showCancelButton: true,
@@ -75,7 +75,7 @@ const Lista = () => {
       try {
         const body = {
           metodo: 'delete',
-          uri: '/metrica/'+item.id,
+          uri: '/'+uri+'/'+item.id,
           params: {},
           data: {}
         };
@@ -99,13 +99,12 @@ const Lista = () => {
       }
     }
   };
-  
 
   return (
       <main className="flex flex-wrap mx-auto justify-center">
         <div className='w-full md:w-11/12 2xl:w-1/2 p-2 pt-7 md:pt-8 md:pb-8'>
           <Cabecalho dados={dadosCabecalho}/>
-          <TabelaMetrica dados={dados} 
+          <TabelaProfissional dados={dados} 
                   carregarRegistros={carregarRegistros} 
                   IrParaTelaAdicionarRegistro={IrParaTelaAdicionarRegistro} 
                   IrParaTelaEditarRegistro={IrParaTelaEditarRegistro} 

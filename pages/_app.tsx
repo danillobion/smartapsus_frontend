@@ -9,6 +9,8 @@ import 'leaflet/dist/leaflet.css'
 // toast
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2';
+
 
 import Head from 'next/head';
 

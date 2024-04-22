@@ -45,7 +45,13 @@ const Tabela = ({ dados, IrParaTelaAdicionarRegistro, IrParaTelaEditarRegistro, 
         <thead className="bg-gray-50">
           <tr>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome</th>
-            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Detalhes</th>
+            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">E-mail</th>
+            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cargo</th>
+            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Função</th>
+            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Área de estudo</th>
+            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data de cadastro</th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
           </tr>
         </thead>
@@ -54,7 +60,13 @@ const Tabela = ({ dados, IrParaTelaAdicionarRegistro, IrParaTelaEditarRegistro, 
             dados.content.map((item) => (
               <tr key={item.id} className="hover:bg-gray-100">
                 <td className="px-6 py-2 whitespace-nowrap">{item.nome}</td>
-                <td className="px-6 py-2 whitespace-nowrap">{item.detalhes}</td>
+                <td className="px-6 py-2 whitespace-nowrap">{item.email}</td>
+                <td className="px-6 py-2 whitespace-nowrap">{item.cargo}</td>
+                <td className="px-6 py-2 whitespace-nowrap">{item.ativo}</td>
+                <td className="px-6 py-2 whitespace-nowrap">{item.funcao}</td>
+                <td className="px-6 py-2 whitespace-nowrap">{item.areaEstudo}</td>
+                <td className="px-6 py-2 whitespace-nowrap">{item.tipoUsuario}</td>
+                <td className="px-6 py-2 whitespace-nowrap">{item.dataCadastro}</td>
                 <td className="px-6 py-2 whitespace-nowrap text-sm font-medium relative">
                   <button onClick={() => dropdownAbrirFechar(item.id)} className="text-gray-500 hover:text-gray-700 focus:outline-none">
                     <p className="text-lg font-medium text-gray-900 dark:text-gray">...</p>

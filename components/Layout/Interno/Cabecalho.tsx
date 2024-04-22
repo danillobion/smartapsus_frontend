@@ -4,13 +4,13 @@ import Link from 'next/link';
 const Cabecalho = ({ dados }) => {
   return (
     <div className="pb-3">
-      <h1 className='text-4xl'>{dados.titulo}</h1>
-      <div className='flex'>
+      <h1 className='text-4xl' style={{ color: '#5F84A1' }}>{dados.titulo}</h1>
+      <div className='flex' style={{ color: '#909090' }}>
         {dados.migalha.map((item, index) => (
           <React.Fragment key={index}>
             {item.link != null && (
               <Link href={item.link} className="flex items-center mb-4">
-                <h6>{item.nome}</h6>
+                <h6 >{item.nome}</h6>
               </Link>
             )}
             {item.link == null && (
@@ -22,6 +22,7 @@ const Cabecalho = ({ dados }) => {
           </React.Fragment>
         ))}
       </div>
+      <hr />
     </div>
   );
 };
