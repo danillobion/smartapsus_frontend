@@ -63,8 +63,15 @@ const Tabela = ({ dados = null, estrutura = null,chamarFuncao = null }) => {
       <div className="flex flex-col">
         <div className="overflow-x-auto">
           <div className="p-1.5 min-w-full inline-block align-middle">
+            <div className='flex justify-end overflow-x-auto'>
+              {estrutura != null ? (estrutura.tabela.botoes.map((botao,index) =>(
+                <button key={index} className='ml-2 mb-2 px-4 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 border rounded' disabled={botao.bloqueado} hidden={botao.oculto}
+                        onClick={() => chamarFuncao(botao.chave, botao)}>{botao.nome}</button>
+              ))):('')}
+            </div>
             <div className="border rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
+                {/* titulo das colunas */}
                 <thead className="bg-gray-50" hidden={estrutura.tabela.configuracoes != undefined && (!estrutura.tabela.configuracoes.cabecalho )}>
                   <tr>
                     {estrutura != null ? (estrutura.tabela.colunas.map((item,index) => (
@@ -81,26 +88,45 @@ const Tabela = ({ dados = null, estrutura = null,chamarFuncao = null }) => {
                     ))) : ('')}
                   </tr>
                 </thead>
+                {/* pesquisar nas colunas */}
                 <thead className="bg-gray-50" hidden={estrutura.tabela.configuracoes != undefined && (!estrutura.tabela.configuracoes.pesquisar )}>
                   <tr>
-                    {estrutura != null ? (estrutura.tabela.colunas.map((item,index) => (
-                      <td key={"pesquisa_"+index}  className='px-6 py-1'>
-                        <input type="text" 
-                                id={'pesquisar_coluna_'+index}
-                                className='pl-1 w-full border rounded text-sm' 
-                                placeholder='Pesquisar' 
-                                hidden={!item.pesquisar || item.pesquisar == undefined}
-                                onChange={(e) => paramsColuna(item.chave, e.target.value)} 
-                                />
-                      </td>
-                    ))) : ('')}
+                    {estrutura != null ? (
+                      estrutura.tabela.colunas.map((item, index) => (
+                        <td key={"pesquisa_" + index} className='px-6 py-1'>
+                          {item.tipo === 'texto' && (
+                            <input
+                              type="text"
+                              id={'pesquisar_coluna_' + index}
+                              className='pl-1 w-full border rounded text-sm'
+                              placeholder='Pesquisar'
+                              hidden={!item.pesquisar || item.pesquisar == undefined}
+                              onChange={(e) => paramsColuna(item.chave, e.target.value)}
+                            />
+                          )}
+                          {item.tipo === 'booleano' && (
+                            <select
+                              id={'pesquisar_coluna_' + index}
+                              className='pl-1 w-full border rounded text-sm bg-white'
+                              hidden={!item.pesquisar || item.pesquisar == undefined}
+                              onChange={(e) => paramsColuna(item.chave, e.target.value)}
+                            >
+                              <option value="">Selecionar</option>
+                              {item.selectOptions.map(option => (
+                                <option key={option.chave} value={option.chave}>{option.valor}</option>
+                              ))}
+                            </select>
+                          )}
+                        </td>
+                      ))
+                    ) : ('')}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200">
                   {dados.content.length > 0 ? (
                     dados.content.map((item) => (
                       <tr key={item.id} className="hover:bg-gray-100">
-                        {estrutura.tabela.colunas.map(({ chave }) => {
+                        {estrutura.tabela.colunas.map(({ chave,tipo,selectOptions }) => {
                           if (chave === 'acoes') {
                             return (
                               <td key="acoes" className="px-6 py-2 whitespace-nowrap relative">
@@ -116,6 +142,15 @@ const Tabela = ({ dados = null, estrutura = null,chamarFuncao = null }) => {
                                 )}
                               </td>
                             );
+                          } else if (item[chave] !== undefined && tipo == "booleano") {
+                            const selectOption = selectOptions.find(option => option.chave === item[chave]);
+                            if (selectOption) {
+                              return (
+                                <td key={chave} className="px-6 py-2 whitespace-nowrap">{selectOption.valor}</td>
+                              );
+                            } else {
+                              return null;
+                            }
                           } else if (item[chave] !== undefined) {
                             return <td key={chave} className="px-6 py-2 whitespace-nowrap">{verificaTexto(item[chave])}</td>;
                           } else if (item[chave] === undefined){

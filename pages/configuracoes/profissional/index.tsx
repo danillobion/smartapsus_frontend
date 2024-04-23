@@ -1,37 +1,77 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Cabecalho from '@/components/Layout/Interno/Cabecalho';
-import TabelaProfissional from '@/components/Tabela/Profissional';
+import Tabela from '@/components/Tabela/Estrutura';
 import { generica } from '@/utils/api';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
-const uri = "profissional";
+const estrutura = {
 
-const dadosCabecalho = {
-  titulo: "Profissionais",
-  migalha:[
-    {nome:'Mapa', link:'/'},
-    {nome:'Configurações', link:null},
-    {nome:'Profissionais', link:null},
-  ]
+  uri:"profissional", //caminho base
+
+  cabecalho:{ //cabecalho da pagina
+    titulo:"Profissionais",
+    migalha:[
+      {nome:'Mapa', link:'/'},
+      {nome:'Configurações', link:null},
+      {nome:'Profissionais', link:null},
+    ]
+  },
+
+  tabela:{
+    configuracoes:{
+      pesquisar:true,//campo pesquisar nas colunas (booleano)
+      cabecalho:true,//cabecalho da tabela (booleano)
+      rodape:true,//rodape da tabela (booleano)
+    },
+    botoes:[ //links
+      {nome: 'Adicionar', chave:'adicionar', bloqueado:false} //nome(string),chave(string),bloqueado(booleano)
+    ],
+    colunas:[ //colunas da tabela
+      {nome:"nome",chave:"nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true}, //nome(string),chave(string),tipo(text,select),selectOpcoes([{chave:string, valor:string}]),pesquisar(booleano)
+      {nome:"cpf/cnpj",chave:"cpfCnpj",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"código conselho de classe",chave:"codigoConselhoClasse",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"pessoa",chave:"pessoaFisicaJuridica",tipo:"booleano",selectOptions:[{chave:false,valor:"Física"},{chave:true,valor:"Jurídica"}],sort:true,pesquisar:true},
+      {nome:"registro conselho de classe",chave:"registroConselhoClasse",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"ações",chave:"acoes",tipo:"button",selectOptions:null,sort:false,pesquisar:false},
+    ],
+    acoes_dropdown:[ //botão de acoes de cada registro
+      {nome: 'Editar', chave:'editar'}, //nome(string),chave(string),bloqueado(booleano)
+      {nome: 'Deletar', chave:'deletar'},
+    ]
+  }
+
 }
 
 const Lista = () => {
   const router = useRouter();
   const [dados, setDados] = useState({ content: [] });
 
-  useEffect(() => {
-    carregarRegistros();
-  }, []);
-
+  const chamarFuncao = (nomeFuncao="",valor=null) => {
+    switch (nomeFuncao) {
+      case 'pesquisar':
+        pesquisarRegistro(valor);
+        break;
+      case 'adicionar':
+        adicionarRegistro();
+        break;
+      case 'editar':
+        editarRegistro(valor);
+        break;
+      case 'deletar':
+        deletarRegistro(valor);
+        break;
+      default:
+        break;
+    }
+  }
   // Função para carregar os dados
-  const carregarRegistros = async (params = null) => {
+  const pesquisarRegistro = async (params=null) => {
     try {
       let body = {
         metodo: 'get',
-        uri: '/'+uri,
-
+        uri: '/'+estrutura.uri,
         params: params != null ? params : { size: 25, page:0},
         data: {}
       }
@@ -48,16 +88,14 @@ const Lista = () => {
       console.error('Erro ao carregar registros:', error);
     }
   };
-
-  // Função que redireciona para a tela adicionar registro
-  const IrParaTelaAdicionarRegistro = () => {
-    router.push('/configuracoes/profissional/edit/undefined');
+  // Função que redireciona para a tela adicionar
+  const adicionarRegistro = () => {
+    router.push('/configuracoes/edit/undefined');
   };
-  // Função que redireciona para a tela editar registro
-  const IrParaTelaEditarRegistro = (item) => {
-    router.push('/configuracoes/profissional/edit/'+item.id);
+  // Função que redireciona para a tela editar
+  const editarRegistro = (item) => {
+    router.push('/configuracoes/edit/'+item.id);
   };
-
   // Função que deleta um registro
   const deletarRegistro = async (item: Item) => {
     const confirmacao = await Swal.fire({
@@ -75,7 +113,7 @@ const Lista = () => {
       try {
         const body = {
           metodo: 'delete',
-          uri: '/'+uri+'/'+item.id,
+          uri: '/'+estrutura.uri+'/'+item.id,
           params: {},
           data: {}
         };
@@ -87,7 +125,7 @@ const Lista = () => {
         } else if (response.data.error) {
           toast(response.data.error.message, { position: "bottom-left" });
         } else {
-          carregarRegistros();
+          pesquisarRegistro();
           Swal.fire({
             title: "Métrica deletada com sucesso",
             icon: "success"
@@ -100,15 +138,19 @@ const Lista = () => {
     }
   };
 
+  useEffect(() => {
+    chamarFuncao('pesquisar',null);
+  }, []);
+
   return (
       <main className="flex flex-wrap mx-auto justify-center">
         <div className='w-full md:w-11/12 2xl:w-1/2 p-2 pt-7 md:pt-8 md:pb-8'>
-          <Cabecalho dados={dadosCabecalho}/>
-          <TabelaProfissional dados={dados} 
-                  carregarRegistros={carregarRegistros} 
-                  IrParaTelaAdicionarRegistro={IrParaTelaAdicionarRegistro} 
-                  IrParaTelaEditarRegistro={IrParaTelaEditarRegistro} 
-                  deletarRegistro={deletarRegistro} />
+          <Cabecalho dados={estrutura.cabecalho}/>
+          <Tabela 
+              dados={dados}
+              estrutura={estrutura}
+              chamarFuncao={chamarFuncao}
+          />
         </div>
       </main>
   );

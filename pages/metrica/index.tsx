@@ -1,38 +1,75 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Cabecalho from '../../components/Layout/Interno/Cabecalho';
-import TabelaMetrica from '../../components/Tabela/Metrica';
-import { generica } from '../../utils/api';
+import Cabecalho from '@/components/Layout/Interno/Cabecalho';
+import Tabela from '@/components/Tabela/Estrutura';
+import { generica } from '@/utils/api';
 import { toast } from 'react-toastify';
 import Swal from 'sweetalert2';
 
-interface Item {
-  id: string;
-}
+const estrutura = {
 
-const dadosCabecalho = {
-  titulo: "Métricas",
-  migalha:[
-    {nome:'Mapa', link:'/'},
-    {nome:'Métricas', link:null},
+  uri:"metrica", //caminho base
+
+  cabecalho:{ //cabecalho da pagina
+    titulo:"Métrica",
+    migalha:[
+      {nome:'Início', link:'/'},
+      {nome:'Configurações', link:null},
+      {nome:'Métrica', link:null},
+    ]
+  },
+
+  tabela:{
+    configuracoes:{
+      pesquisar:true,//campo pesquisar nas colunas (booleano)
+      cabecalho:true,//cabecalho da tabela (booleano)
+      rodape:true,//rodape da tabela (booleano)
+    },
+    botoes:[ //links
+      {nome: 'Adicionar', chave:'adicionar', bloqueado:false} //nome(string),chave(string),bloqueado(booleano)
+    ],
+    colunas:[ //colunas da tabela
+      {nome:"nome",chave:"nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"detalhes",chave:"detalhes",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"ações",chave:"acoes",tipo:"button",selectOptions:null,sort:false,pesquisar:false},
+    ],
+    acoes_dropdown:[ //botão de acoes de cada registro
+    {nome: 'Editar', chave:'editar'}, //nome(string),chave(string),bloqueado(booleano)
+    {nome: 'Deletar', chave:'deletar'},
   ]
+  }
+
 }
 
 const Lista = () => {
   const router = useRouter();
   const [dados, setDados] = useState({ content: [] });
 
-  useEffect(() => {
-    carregarRegistros();
-  }, []);
-
+  const chamarFuncao = (nomeFuncao="",valor=null) => {
+    switch (nomeFuncao) {
+      case 'pesquisar':
+        pesquisarRegistro(valor);
+        break;
+      case 'adicionar':
+        adicionarRegistro(valor);
+        break;
+      case 'editar':
+        editarRegistro(valor);
+        break;
+      case 'deletar':
+        deletarRegistro(valor);
+        break;
+      default:
+        break;
+    }
+  }
   // Função para carregar os dados
-  const carregarRegistros = async (params = null) => {
+  const pesquisarRegistro = async (params=null) => {
     try {
       let body = {
         metodo: 'get',
-        uri:'/metrica',
-        params: params != null ? params : { size: 25, page:0, nome:null, detalhes:null },
+        uri: '/'+estrutura.uri,
+        params: params != null ? params : { size: 25, page:0},
         data: {}
       }
       const response = await generica(body);
@@ -48,20 +85,18 @@ const Lista = () => {
       console.error('Erro ao carregar registros:', error);
     }
   };
-
-  // Função que redireciona para a tela adicionar registro
-  const IrParaTelaAdicionarRegistro = () => {
-    router.push('/metrica/edit/undefined');
-  };
-  // Função que redireciona para a tela editar registro
-  const IrParaTelaEditarRegistro = (item: Item) => {
+  // Função que redireciona para a tela adicionar
+  const adicionarRegistro = (item) => {
     router.push('/metrica/edit/'+item.id);
   };
-
+  // Função que redireciona para a tela editar
+  const editarRegistro = (item) => {
+    router.push('/metrica/edit/'+item.id);
+  };
   // Função que deleta um registro
   const deletarRegistro = async (item: Item) => {
     const confirmacao = await Swal.fire({
-      title: "Você deseja deletar essa métrica?",
+      title: "Você deseja deletar a métrica " + item.nome + "?",
       text: "Essa ação não poderá ser desfeita",
       icon: "warning",
       showCancelButton: true,
@@ -75,7 +110,7 @@ const Lista = () => {
       try {
         const body = {
           metodo: 'delete',
-          uri: '/metrica/'+item.id,
+          uri: '/'+estrutura.uri+'/'+item.id,
           params: {},
           data: {}
         };
@@ -87,7 +122,7 @@ const Lista = () => {
         } else if (response.data.error) {
           toast(response.data.error.message, { position: "bottom-left" });
         } else {
-          carregarRegistros();
+          pesquisarRegistro();
           Swal.fire({
             title: "Métrica deletada com sucesso",
             icon: "success"
@@ -99,20 +134,24 @@ const Lista = () => {
       }
     }
   };
-  
+
+  useEffect(() => {
+    chamarFuncao('pesquisar',null);
+  }, []);
 
   return (
       <main className="flex flex-wrap mx-auto justify-center">
         <div className='w-full md:w-11/12 2xl:w-1/2 p-2 pt-7 md:pt-8 md:pb-8'>
-          <Cabecalho dados={dadosCabecalho}/>
-          <TabelaMetrica dados={dados} 
-                  carregarRegistros={carregarRegistros} 
-                  IrParaTelaAdicionarRegistro={IrParaTelaAdicionarRegistro} 
-                  IrParaTelaEditarRegistro={IrParaTelaEditarRegistro} 
-                  deletarRegistro={deletarRegistro} />
+          <Cabecalho dados={estrutura.cabecalho}/>
+          <Tabela 
+              dados={dados}
+              estrutura={estrutura}
+              chamarFuncao={chamarFuncao}
+          />
         </div>
       </main>
   );
 };
 
 export default Lista;
+

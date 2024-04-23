@@ -26,16 +26,16 @@ const estrutura = {
       rodape:true,//rodape da tabela (booleano)
     },
     botoes:[ //links
-      {titulo: 'Adicionar', chave:'adicionar', bloqueado:false} //nome(string),chave(string),bloqueado(booleano)
+      {nome: 'Adicionar', chave:'adicionar', bloqueado:false} //nome(string),chave(string),bloqueado(booleano)
     ],
     colunas:[ //colunas da tabela
-      {nome:"nome",chave:"nome",tipo:"text",selectOptions:null,sort:true,pesquisar:true}, //nome(string),chave(string),tipo(text,select),selectOpcoes([{chave:string, valor:string}]),pesquisar(booleano)
-      {nome:"unidade",chave:"tipoUnidade",tipo:"text",selectOptions:null,sort:true,pesquisar:true},
-      {nome:"cnes",chave:"cnes",tipo:"text",selectOptions:null,sort:true,pesquisar:true},
-      {nome:"grau dependência",chave:"grauDependencia",tipo:"text",selectOptions:null,sort:true,pesquisar:true},
-      {nome:"turno",chave:"turnoAtendimento",tipo:"text",selectOptions:null,sort:true,pesquisar:true},
-      {nome:"gerencia",chave:"gerenciaAtencaoBasica",tipo:"text",selectOptions:null,sort:true,pesquisar:true},
-      {nome:"Cadastro",chave:"dataCriacao",tipo:"text",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"nome",chave:"nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true}, //nome(string),chave(string),tipo(text,select),selectOpcoes([{chave:string, valor:string}]),pesquisar(booleano)
+      {nome:"unidade",chave:"tipoUnidade",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"cnes",chave:"cnes",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"grau dependência",chave:"grauDependencia",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"turno",chave:"turnoAtendimento",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"gerencia",chave:"gerenciaAtencaoBasica",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"Cadastro",chave:"dataCriacao",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
       {nome:"ações",chave:"acoes",tipo:"button",selectOptions:null,sort:false,pesquisar:false},
     ],
     acoes_dropdown:[ //botão de acoes de cada registro
@@ -92,16 +92,16 @@ const Lista = () => {
   };
   // Função que redireciona para a tela adicionar
   const adicionarRegistro = () => {
-    router.push('/configuracoes/profissional/edit/undefined');
+    router.push('/configuracoes/edit/undefined');
   };
   // Função que redireciona para a tela editar
   const editarRegistro = (item) => {
-    router.push('/configuracoes/profissional/edit/'+item.id);
+    router.push('/configuracoes/edit/'+item.id);
   };
   // Função que deleta um registro
   const deletarRegistro = async (item: Item) => {
     const confirmacao = await Swal.fire({
-      title: "Você deseja deletar a unidade " + item.nome + "?",
+      title: "Você deseja deletar o registro " + item.nome + "?",
       text: "Essa ação não poderá ser desfeita",
       icon: "warning",
       showCancelButton: true,

@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const Cabecalho = ({ dados }) => {
   return (
-    <div className="pb-3">
+    <div className="pb-0.5">
       <h1 className='text-4xl' style={{ color: '#5F84A1' }}>{dados.titulo}</h1>
       <div className='flex' style={{ color: '#909090' }}>
         {dados.migalha.map((item, index) => (
