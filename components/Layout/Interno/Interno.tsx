@@ -34,9 +34,34 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="h-screen overflow-y-hidden">
-      {/* menu lateral */}
-      <div className={isMenuOpen ? '' : 'max-sm:hidden'}>
+    <div className="">
+      <div className='z-20 fixed shadow-sm bg-white w-full'>
+        <div className='shadow-lg z-10 bg-white w-full p-3 pl-5 pr-5 flex items-center justify-between'>
+          <div className='flex'>
+            <div className='sm:hidden mr-3'>
+              <button onClick={handleToggleMenu} className='top-3 left-3 focus:outline-none'>
+                <svg xmlns="http://www.w3.org/2000/svg" className="p-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+              </button>
+            </div>
+            <Link href="/" >
+              <div className='flex'>
+                <h6 style={{ color: '#1A4568' }}>smart</h6>
+                <h6 style={{ color: '#5F84A1' }}>Ap</h6>
+                <h6 style={{ color: '#90AFC4' }}>SUS</h6>
+              </div>
+            </Link>
+          </div>
+          <div>
+            <Link href="/sobre" className="mr-4">Sobre</Link>
+            <Link href="/entrar">Entrar</Link>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div className='z-10 fixed left-0 h-full bg-pink-50 shadow-sm'>
+        <div className={isMenuOpen ? '' : 'max-sm:hidden'}>
         <div className={`flex transition-all duration-200 ${isMenuOpen ? 'w-60' : 'w-12'} shadow-lg bg-white h-screen p-3 pt-16 absolute z-10 overflow-y-auto overflow-x-hidden`}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}>
@@ -171,33 +196,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </ul>
           </div>
         </div>
-      {/* menu superior */}
-      <div className="flex flex-col flex-grow">
-        <div className='shadow-lg z-10 bg-white w-full p-3 pl-5 pr-5 flex items-center justify-between'>
-          <div className='flex'>
-            <div className='sm:hidden mr-3'>
-              <button onClick={handleToggleMenu} className='top-3 left-3 focus:outline-none'>
-                <svg xmlns="http://www.w3.org/2000/svg" className="p-0 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-              </button>
-            </div>
-            <Link href="/" >
-              <div className='flex'>
-                <h6 style={{ color: '#1A4568' }}>smart</h6>
-                <h6 style={{ color: '#5F84A1' }}>Ap</h6>
-                <h6 style={{ color: '#90AFC4' }}>SUS</h6>
-              </div>
-            </Link>
-          </div>
-          <div>
-            <Link href="/sobre" className="mr-4">Sobre</Link>
-            <Link href="/entrar">Entrar</Link>
-          </div>
         </div>
-        {/* conteudo */}
-        <div className="flex-grow bg-white md:ml-15 sm:pl-0 md:pl-12" style={{ overflowY: 'auto' }}>
+        <div className='md:pl-12 pt-12'>
+          <div>
           {children}
+
+          </div>
         </div>
       </div>
     </div>
