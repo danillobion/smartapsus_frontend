@@ -15,7 +15,7 @@ const estrutura = {
     migalha:[
       {nome:'Mapa', link:'/'},
       {nome:'Configurações', link:null},
-      {nome:'Profissionais', link:null},
+      {nome:'Profissionais', link:'/configuracoes/profissional'},
     ]
   },
 
@@ -32,7 +32,7 @@ const estrutura = {
       {nome:"nome",chave:"nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true}, //nome(string),chave(string),tipo(text,select),selectOpcoes([{chave:string, valor:string}]),pesquisar(booleano)
       {nome:"cpf/cnpj",chave:"cpfCnpj",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
       {nome:"código conselho de classe",chave:"codigoConselhoClasse",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
-      {nome:"pessoa",chave:"pessoaFisicaJuridica",tipo:"booleano",selectOptions:[{chave:false,valor:"Física"},{chave:true,valor:"Jurídica"}],sort:true,pesquisar:true},
+      {nome:"pessoa",chave:"pessoaFisicaJuridica",tipo:"booleano",selectOptions:[{chave:false,valor:"Jurídica"},{chave:true,valor:"Física"}],sort:true,pesquisar:true},
       {nome:"registro conselho de classe",chave:"registroConselhoClasse",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
       {nome:"ações",chave:"acoes",tipo:"button",selectOptions:null,sort:false,pesquisar:false},
     ],
@@ -90,11 +90,11 @@ const Lista = () => {
   };
   // Função que redireciona para a tela adicionar
   const adicionarRegistro = () => {
-    router.push('/configuracoes/edit/undefined');
+    router.push('/configuracoes/profissional/cadastro');
   };
   // Função que redireciona para a tela editar
   const editarRegistro = (item) => {
-    router.push('/configuracoes/edit/'+item.id);
+    router.push('/configuracoes/profissional/'+item.id);
   };
   // Função que deleta um registro
   const deletarRegistro = async (item: Item) => {
@@ -127,7 +127,7 @@ const Lista = () => {
         } else {
           pesquisarRegistro();
           Swal.fire({
-            title: "Métrica deletada com sucesso",
+            title: "Profissional deletado com sucesso",
             icon: "success"
           });
         }
