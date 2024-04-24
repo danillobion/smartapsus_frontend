@@ -61,14 +61,14 @@ const Tabela = ({ dados = null, estrutura = null,chamarFuncao = null }) => {
   return (
     <div>
       <div className="flex flex-col">
+        <div className='flex justify-end overflow-x-auto mt-2.5'>
+          {estrutura != null ? (estrutura.tabela.botoes.map((botao,index) =>(
+            <button key={index} className='ml-2 mb-2 px-4 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 border rounded' disabled={botao.bloqueado} hidden={botao.oculto}
+                    onClick={() => chamarFuncao(botao.chave, botao)}>{botao.nome}</button>
+          ))):('')}
+        </div>
         <div className="overflow-x-auto">
-          <div className="p-1.5 min-w-full inline-block align-middle">
-            <div className='flex justify-end overflow-x-auto'>
-              {estrutura != null ? (estrutura.tabela.botoes.map((botao,index) =>(
-                <button key={index} className='ml-2 mb-2 px-4 py-2 text-sm text-gray-700 bg-gray-50 hover:bg-gray-100 border rounded' disabled={botao.bloqueado} hidden={botao.oculto}
-                        onClick={() => chamarFuncao(botao.chave, botao)}>{botao.nome}</button>
-              ))):('')}
-            </div>
+          <div className="p-1 min-w-full inline-block align-middle">
             <div className="border rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
                 {/* titulo das colunas */}
