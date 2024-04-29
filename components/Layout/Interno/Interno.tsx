@@ -10,6 +10,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [windowWidth, setWindowWidth] = useState<number>(0);
   const [isSubMenuOpen, setIsSubMenuOpen] = useState(false);
   const [isMenuOpenSistemas, setIsSubMenuOpenSistemas] = useState(false);
+  const [isMenuOpenAreas, setIsSubMenuOpenAreas] = useState(false);
 
   const handleMouseEnter = () => {
     setIsMenuOpen(true);
@@ -18,6 +19,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const handleMouseLeave = () => {
     setIsMenuOpen(false);
     setIsSubMenuOpen(false);
+    setIsSubMenuOpenAreas(false);
     setIsSubMenuOpenSistemas(false);
   };
 
@@ -31,6 +33,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
   const handleToggleSubMenuRegioes = () => {
     setIsSubMenuOpenSistemas(!isMenuOpenSistemas);
+  };
+  const handleToggleSubMenuAreas = () => {
+    setIsSubMenuOpenAreas(!isMenuOpenAreas);
   };
 
   return (
@@ -104,15 +109,51 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       </svg>
                     </span>
                   </button>
-                  {/* REGIOES */}
+                  {/* AREAS */}
                   {isSubMenuOpen && (
                     <ul className="mt-2">
                       <li className="text-gray-700 hover:text-gray-900 px-9 py-2">
-                        <Link href="/metrica">
-                          <div className='flex'>
-                          <svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5"><path d="M2.5,8.86l9,5.2a1,1,0,0,0,1,0l9-5.2A1,1,0,0,0,22,8a1,1,0,0,0-.5-.87l-9-5.19a1,1,0,0,0-1,0l-9,5.19A1,1,0,0,0,2,8,1,1,0,0,0,2.5,8.86ZM12,4l7,4-7,4L5,8Zm8.5,7.17L12,16,3.5,11.13a1,1,0,0,0-1.37.37,1,1,0,0,0,.37,1.36l9,5.2a1,1,0,0,0,1,0l9-5.2a1,1,0,0,0,.37-1.36A1,1,0,0,0,20.5,11.13Zm0,4L12,20,3.5,15.13a1,1,0,0,0-1.37.37,1,1,0,0,0,.37,1.36l9,5.2a1,1,0,0,0,1,0l9-5.2a1,1,0,0,0,.37-1.36A1,1,0,0,0,20.5,15.13Z"/></svg>                            <h6 className='hover:text-gray-900 ml-2'>Áreas</h6>
-                          </div>
-                        </Link>
+                        <div className="relative">
+                          <button onClick={handleToggleSubMenuAreas} className="flex items-center relative">
+                            <svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5"><path d="M2.5,8.86l9,5.2a1,1,0,0,0,1,0l9-5.2A1,1,0,0,0,22,8a1,1,0,0,0-.5-.87l-9-5.19a1,1,0,0,0-1,0l-9,5.19A1,1,0,0,0,2,8,1,1,0,0,0,2.5,8.86ZM12,4l7,4-7,4L5,8Zm8.5,7.17L12,16,3.5,11.13a1,1,0,0,0-1.37.37,1,1,0,0,0,.37,1.36l9,5.2a1,1,0,0,0,1,0l9-5.2a1,1,0,0,0,.37-1.36A1,1,0,0,0,20.5,11.13Zm0,4L12,20,3.5,15.13a1,1,0,0,0-1.37.37,1,1,0,0,0,.37,1.36l9,5.2a1,1,0,0,0,1,0l9-5.2a1,1,0,0,0,.37-1.36A1,1,0,0,0,20.5,15.13Z"/></svg>
+                            <div className='flex justify-between w-100'>
+                              <h6 className="hover:text-gray-900 ml-2">Áreas</h6>
+                              <span className="ml-3 text-gray-900">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"  className={`${isMenuOpenAreas ? 'w-4 h-4 inline-block' : 'w-4 h-4 inline-block transform rotate-180'}`} >
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                                </svg>
+                              </span>
+                            </div>
+                          </button>
+                          {isMenuOpenAreas && (
+                            <ul className="mt-2">
+                              <li className="text-gray-700 hover:text-gray-900 px-6 py-2">
+                                <Link href="/configuracoes/areas/estado">
+                                  <div className='flex'>
+                                    <svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5"><path d="M2.5,8.86l9,5.2a1,1,0,0,0,1,0l9-5.2A1,1,0,0,0,22,8a1,1,0,0,0-.5-.87l-9-5.19a1,1,0,0,0-1,0l-9,5.19A1,1,0,0,0,2,8,1,1,0,0,0,2.5,8.86ZM12,4l7,4-7,4L5,8Zm8.5,7.17L12,16,3.5,11.13a1,1,0,0,0-1.37.37,1,1,0,0,0,.37,1.36l9,5.2a1,1,0,0,0,1,0l9-5.2a1,1,0,0,0,.37-1.36A1,1,0,0,0,20.5,11.13Zm0,4L12,20,3.5,15.13a1,1,0,0,0-1.37.37,1,1,0,0,0,.37,1.36l9,5.2a1,1,0,0,0,1,0l9-5.2a1,1,0,0,0,.37-1.36A1,1,0,0,0,20.5,15.13Z"/></svg>
+                                    <h6 className='hover:text-gray-900 ml-2'>Estados</h6>
+                                  </div>
+                                </Link>
+                              </li>
+                              <li className="text-gray-700 hover:text-gray-900 px-6 py-2">
+                                <Link href="/configuracoes/areas/cidade">
+                                  <div className='flex'>
+                                    <svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5"><path d="M2.5,8.86l9,5.2a1,1,0,0,0,1,0l9-5.2A1,1,0,0,0,22,8a1,1,0,0,0-.5-.87l-9-5.19a1,1,0,0,0-1,0l-9,5.19A1,1,0,0,0,2,8,1,1,0,0,0,2.5,8.86ZM12,4l7,4-7,4L5,8Zm8.5,7.17L12,16,3.5,11.13a1,1,0,0,0-1.37.37,1,1,0,0,0,.37,1.36l9,5.2a1,1,0,0,0,1,0l9-5.2a1,1,0,0,0,.37-1.36A1,1,0,0,0,20.5,11.13Zm0,4L12,20,3.5,15.13a1,1,0,0,0-1.37.37,1,1,0,0,0,.37,1.36l9,5.2a1,1,0,0,0,1,0l9-5.2a1,1,0,0,0,.37-1.36A1,1,0,0,0,20.5,15.13Z"/></svg>
+                                    <h6 className='hover:text-gray-900 ml-2'>Cidades</h6>
+                                  </div>
+                                </Link>
+                              </li>
+                              <li className="text-gray-700 hover:text-gray-900 px-6 py-2">
+                                <Link href="/configuracoes/areas/bairro">
+                                  <div className='flex'>
+                                    <svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" className="w-5 h-5"><path d="M2.5,8.86l9,5.2a1,1,0,0,0,1,0l9-5.2A1,1,0,0,0,22,8a1,1,0,0,0-.5-.87l-9-5.19a1,1,0,0,0-1,0l-9,5.19A1,1,0,0,0,2,8,1,1,0,0,0,2.5,8.86ZM12,4l7,4-7,4L5,8Zm8.5,7.17L12,16,3.5,11.13a1,1,0,0,0-1.37.37,1,1,0,0,0,.37,1.36l9,5.2a1,1,0,0,0,1,0l9-5.2a1,1,0,0,0,.37-1.36A1,1,0,0,0,20.5,11.13Zm0,4L12,20,3.5,15.13a1,1,0,0,0-1.37.37,1,1,0,0,0,.37,1.36l9,5.2a1,1,0,0,0,1,0l9-5.2a1,1,0,0,0,.37-1.36A1,1,0,0,0,20.5,15.13Z"/></svg>
+                                    <h6 className='hover:text-gray-900 ml-2'>Bairros</h6>
+                                  </div>
+                                </Link>
+                              </li>
+                            </ul>
+                          )}
+                        </div>
                       </li>
                       <li className="text-gray-700 hover:text-gray-900 px-9 py-2">
                         <Link href="/configuracoes/unidade">

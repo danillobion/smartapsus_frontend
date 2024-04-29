@@ -5,8 +5,14 @@ const Cadastro = ({ estrutura = null, dadosPreenchidos = null, setDadosPreenchid
     event.preventDefault();
     const formData = new FormData(event.target);
     const data = {};
+
     formData.forEach((value, key) => { 
-      data[key] = value;
+      const campo = estrutura?.cadastro?.campos.flat().find(campo => campo.chave === key && campo.tipo === 'select');
+      if(campo){
+        data[key] = {id: value}; //se for um select o retorno deve ser desse jeito -> chave: {id:value}
+      }else{
+        data[key] = value; //qualquer outro campo -> chave: valor
+      }
     });
     
     chamarFuncao('salvar', data);
@@ -97,7 +103,7 @@ const Cadastro = ({ estrutura = null, dadosPreenchidos = null, setDadosPreenchid
                       required={e.obrigatorio ? 'required' : ''}
                     >
                       {e.selectOptions && e.selectOptions.map((option, optionIdx) => (
-                        <option key={optionIdx} selected={dadosPreenchidos && dadosPreenchidos[e.chave] == option.chave ? 'selected' : ''} value={option.chave}>{option.valor}</option>
+                        <option key={optionIdx} selected={dadosPreenchidos && dadosPreenchidos[e.chave]?.id == option.chave ? 'selected' : ''} value={option.chave}>{option.valor}</option>
                       ))}
                     </select>
                   </>
