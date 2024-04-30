@@ -22,6 +22,9 @@ const Editar = () => {
       case 'editar':
         editarRegistro(valor);
         break;
+      case 'regioes':
+        regioesRegistro(valor);
+        break;
       default:
         break;
     }
@@ -115,24 +118,46 @@ const Editar = () => {
       }
   };
 
+  // Função reponsavel por pegar as regiões
+  const regioesRegistro = async (item) => {
+    try {
+      const body = {
+        metodo: 'get',
+        uri: '/regiao',
+        params: {},
+        data: item
+      };
+
+      const response = await generica(body);
+      
+      if (response.data.errors) {
+        estrutura.cadastro.campos.map(linha =>{
+          linha.map(campo => {
+            if(response.data.errors[campo.chave]){
+              toast("Erro: "+response.data.errors[campo.chave], { position: "bottom-left" });
+            }
+          });
+        })
+
+      } else if (response.data.error) {
+        toast(response.data.error.message, { position: "bottom-left" });
+      } else {
+        setRegioes(response.data.content);
+      }
+    } catch (error) {
+      console.error('Erro ao localizar registro:', error);
+      toast("Erro ao localizar registro. Tente novamente!", { position: "bottom-left" });
+    }
+};
+
+
   useEffect(() => {
+    chamarFuncao('regioes',null);
+
     const { id } = router.query; // Obtém o ID da URL
     if (typeof(id) !== 'undefined' && id !== 'cadastro') {
       chamarFuncao('editar', id);
     };
-    // TODO: é necesário uma rota pra pegar as regiões!!!
-    setRegioes([
-      {
-        id: 1,
-        idIBGE: 1,
-        sigla: 'NE'
-      },
-      { 
-        id: 2,
-        idIBGE: 2,
-        sigla: 'CO'
-      }
-    ]);
 
   }, [router.query]);
 
@@ -156,7 +181,7 @@ const Editar = () => {
         ],
         [
           { nome: "Código do IGBE", chave: "idIBGE", tipo: "number", mensagem: "Digite o código do IBGE", obrigatorio: true, selectOptions:regioes, bloqueado: false, oculto: false },
-          { nome: "Selecione a região", chave: "regiao", tipo: "select", mensagem: "Selecione uma região", obrigatorio: false, selectOptions: regioes && regioes?.map(({ idIBGE: chave, sigla: valor, ...resto }) => ({ chave, valor, ...resto })), bloqueado: false, oculto: false },
+          { nome: "Selecione a região", chave: "regiao", tipo: "select", mensagem: "Selecione uma região", obrigatorio: false, selectOptions: regioes && regioes?.map(({ id: chave, nome: valor, ...resto }) => ({ chave, valor, ...resto })), bloqueado: false, oculto: false },
         ]
       ],
       acoes: [

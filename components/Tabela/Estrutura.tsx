@@ -157,8 +157,10 @@ const Tabela = ({ dados = null, estrutura = null,chamarFuncao = null }) => {
                             const keys = chave.split('.');
                             let nestedValue = item;
                             for (let key of keys) {
-                              nestedValue = nestedValue[key];
-                              if (nestedValue === undefined) break;
+                              if(nestedValue){
+                                nestedValue = nestedValue[key];
+                                if (nestedValue === undefined) break;
+                              }
                             }
                             return <td key={chave} className="px-6 py-2 whitespace-nowrap">{verificaTexto(nestedValue)}</td>;
                           }

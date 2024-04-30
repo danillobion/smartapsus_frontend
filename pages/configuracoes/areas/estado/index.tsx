@@ -31,7 +31,7 @@ const estrutura = {
     colunas:[ //colunas da tabela
       {nome:"estado",chave:"nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true}, //nome(string),chave(string),tipo(text,select),selectOpcoes([{chave:string, valor:string}]),pesquisar(booleano)
       {nome:"sigla",chave:"sigla",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
-      {nome:"região",chave:"regiao",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"região",chave:"regiao.nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
       {nome:"ações",chave:"acoes",tipo:"button",selectOptions:null,sort:false,pesquisar:false},
     ],
     acoes_dropdown:[ //botão de acoes de cada registro
