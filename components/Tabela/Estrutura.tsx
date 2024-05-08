@@ -94,7 +94,7 @@ const Tabela = ({ dados = null, estrutura = null,chamarFuncao = null }) => {
                     {estrutura != null ? (
                       estrutura.tabela.colunas.map((item, index) => (
                         <td key={"pesquisa_" + index} className='px-6 py-1'>
-                          {item.tipo === 'texto' && (
+                          {(item.tipo === 'texto' || item.tipo === 'json')  && !(item.selectOptions && item.selectOptions.length > 0) && (
                             <input
                               type="text"
                               id={'pesquisar_coluna_' + index}
@@ -116,6 +116,19 @@ const Tabela = ({ dados = null, estrutura = null,chamarFuncao = null }) => {
                                 <option key={option.chave} value={option.chave}>{option.valor}</option>
                               ))}
                             </select>
+                          )}
+                          {item.tipo === 'texto' && item.selectOptions && item.selectOptions.length > 0 && (
+                              <select
+                                id={'pesquisar_coluna_' + index}
+                                className='pl-1 w-full border rounded text-sm bg-white'
+                                hidden={!item.pesquisar || item.pesquisar == undefined}
+                                onChange={(e) => paramsColuna(item.chave, e.target.value)}
+                              >
+                                <option value="">Selecionar</option>
+                                {item.selectOptions.map(option => (
+                                  <option key={option.chave} value={option.chave}>{option.valor}</option>
+                                ))}
+                              </select>
                           )}
                         </td>
                       ))
@@ -142,7 +155,7 @@ const Tabela = ({ dados = null, estrutura = null,chamarFuncao = null }) => {
                                 )}
                               </td>
                             );
-                          } else if (item[chave] !== undefined && tipo == "booleano") {
+                          } else if (item[chave] !== undefined && (tipo == "booleano" || selectOptions)) {
                             const selectOption = selectOptions.find(option => option.chave === item[chave]);
                             if (selectOption) {
                               return (
@@ -151,7 +164,14 @@ const Tabela = ({ dados = null, estrutura = null,chamarFuncao = null }) => {
                             } else {
                               return null;
                             }
-                          } else if (item[chave] !== undefined) {
+                          }  else if (  tipo === "json") {
+                            
+                            const partes = chave.split('|');
+                            let key = partes[0];
+                            let jsonKey = partes[1];
+                            let jsonItem = JSON.parse(item[key]);
+                            return <td key={chave} className="px-6 py-2 whitespace-nowrap">{verificaTexto(jsonItem[jsonKey])}</td>;
+                          }else if (item[chave] !== undefined) {
                             return <td key={chave} className="px-6 py-2 whitespace-nowrap">{verificaTexto(item[chave])}</td>;
                           } else if (item[chave] === undefined){
                             const keys = chave.split('.');
