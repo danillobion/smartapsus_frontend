@@ -155,7 +155,41 @@ const Tabela = ({ dados = null, estrutura = null,chamarFuncao = null }) => {
                                 )}
                               </td>
                             );
-                          } else if (item[chave] !== undefined && (tipo == "booleano" || selectOptions)) {
+                          } else if (item[chave] !== undefined && tipo === "status") {
+                            const selectOption = selectOptions.find(option => option.chave === item[chave]);
+                            if (selectOption) {
+                              let element;  // Variável para armazenar o elemento a ser retornado
+                              switch (selectOption.valor) {
+                                case 'Finalizado':
+                                  element = (
+                                    <td key={chave} className="px-6 py-2 whitespace-nowrap flex justify-center items-center">
+                                      <span className="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-green-100 text-green-800 justify-center items-center">
+                                        {selectOption.valor}
+                                      </span>
+                                    </td>
+                                  );
+                                  break;
+                                case 'Erro':
+                                  element = (
+                                    <td key={chave} className="px-6 py-2 whitespace-nowrap flex justify-center items-center">
+                                      <span className="px-2 inline-flex text-sm leading-5 font-semibold rounded-full bg-red-100 text-red-800 justify-center items-center">
+                                        {selectOption.valor}
+                                      </span>
+                                    </td>
+                                  );
+                                  break;
+                                default:
+                                  element = (
+                                    <td key={chave} className="px-6 py-2 whitespace-nowrap flex justify-center items-center">
+                                      <span className="px-3 inline-flex text-sm leading-6 font-semibold rounded-full bg-gray-100 text-gray-800 justify-center items-center">
+                                        {selectOption.valor}
+                                      </span>
+                                    </td>
+                                  );                               }
+                              return element;  // Retorna o elemento conforme decidido pelo switch
+                            }
+                          }
+                           else if (item[chave] !== undefined && (tipo == "booleano" || selectOptions)) {
                             const selectOption = selectOptions.find(option => option.chave === item[chave]);
                             if (selectOption) {
                               return (
@@ -165,7 +199,6 @@ const Tabela = ({ dados = null, estrutura = null,chamarFuncao = null }) => {
                               return null;
                             }
                           }  else if (  tipo === "json") {
-                            
                             const partes = chave.split('|');
                             let key = partes[0];
                             let jsonKey = partes[1];

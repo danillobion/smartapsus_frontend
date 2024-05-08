@@ -30,11 +30,10 @@ const estrutura = {
     ],
     colunas:[ //colunas da tabela
       {nome:"formato",chave:"formatoArquivo",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
-      {nome:"arquivo",chave:"parametros|pathArquivo",tipo:"json",selectOptions:null,sort:false,pesquisar:true},
-      {nome:"entidade",chave:"parametros|entidade",tipo:"json",selectOptions:null,sort:false,pesquisar:true},
+      {nome:"entidade",chave:"parametros|entidade",tipo:"json",selectOptions:null,sort:false,pesquisar:false},
       {nome:"data agendada",chave:"dataHoraAgendamento",tipo:"texto",selectOptions:null,sort:true,pesquisar:false},
       {nome:"data conclusao",chave:"dataHoraConclusao",tipo:"texto",selectOptions:null,sort:true,pesquisar:false},
-      {nome:"status",chave:"codigoRetorno",tipo:"texto",selectOptions:[{chave:0,valor:"Pendente"},{chave:1,valor:"Finalizado"},{chave:-1,valor:"Erro"}],sort:true,pesquisar:true},
+      {nome:"status",chave:"codigoRetorno",tipo:"status",selectOptions:[{chave:0,valor:"Pendente"},{chave:1,valor:"Finalizado"},{chave:-1,valor:"Erro"}],sort:true,pesquisar:true},
     ],
     acoes_dropdown:[ //botão de acoes de cada registro
     ]

@@ -22,13 +22,13 @@ const estrutura = {
     campos: [ // colunas da tabela
       [
         { nome: "tipo", chave: "formatoArquivo", tipo: "select", mensagem: "Selecione uma opção", obrigatorio: true, selectOptions:[{chave:"csv_smartapsus",valor:"CSV",principal:true},{chave:"arq_geojson",valor:"GeoJSON",principal:false},{chave:"api_ibge",valor:"IBGE",principal:true}], bloqueado: false, oculto: false },
-        { nome: "versao", chave: "versao", tipo: "select", mensagem: "Selecione uma opção", obrigatorio: true, selectOptions: [{chave:"V1",valor:"V1",principal:true},{chave:"V2",valor:"V2",principal:false}], bloqueado: false, oculto: false },
+        { nome: "versao", chave: "versao", tipo: "select", mensagem: "Selecione uma opção", obrigatorio: true, selectOptions: [{chave:"V1",valor:"V1",principal:true},{chave:"V2",valor:"V2",principal:false}], bloqueado: true, oculto: true },
       ],
       [
         { nome: "entidade", chave: "parametros.entidade", tipo: "text", mensagem: "Digite a entidade que deseja importar", obrigatorio: true, selectOptions: null, bloqueado: false, oculto: false },
       ],
       [
-        { nome: "registro do conselho de classe", chave: "registroConselhoClasse", tipo: "number", mensagem: "Digite o registro do conselho de classe", obrigatorio: true, selectOptions: null, bloqueado: false, oculto: false },
+        { nome: "arquivo", chave: "parametros.pathArquivo", tipo: "text", mensagem: "Digite o caminho do arquivo", obrigatorio: true, selectOptions: null, bloqueado: false, oculto: false },
         {}, // pula um campo
       ]
     ],
