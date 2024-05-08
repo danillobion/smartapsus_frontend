@@ -74,7 +74,7 @@ const IndexPage: React.FC = () => {
       try {
       let body = {
           metodo: 'get',
-          uri: '/regiao',
+          uri: '/regiao/area',
           params: {size: 50},
           data: {}
       }
@@ -86,7 +86,7 @@ const IndexPage: React.FC = () => {
       }else if(response.data.error != undefined){
           toast(response.data.error.message,{position: "bottom-left"});
       }else{
-          setDadosAreas(response.data.content);
+          setDadosAreas(response.data);
       }
       } catch (error) {
       console.error('Erro ao carregar registros:', error);
@@ -97,7 +97,7 @@ const IndexPage: React.FC = () => {
       try {
       let body = {
           metodo: 'get',
-          uri: '/estado',
+          uri: '/estado/area',
           params: {size: 50},
           data: {}
       }
@@ -108,7 +108,7 @@ const IndexPage: React.FC = () => {
       }else if(response.data.error != undefined){
           toast(response.data.error.message,{position: "bottom-left"});
       }else{
-          setDadosAreas(response.data.content);
+          setDadosAreas(response.data);
       }
       } catch (error) {
       console.error('Erro ao carregar registros:', error);
