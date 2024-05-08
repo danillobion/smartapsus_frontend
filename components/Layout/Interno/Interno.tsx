@@ -156,7 +156,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                         </div>
                       </li>
                       <li className="text-gray-700 hover:text-gray-900 px-9 py-2">
-                        <Link href="/configuracoes/unidade">
+                        <Link href="/configuracoes/unidadeAPS">
                           <div className='flex'>
                             <svg width="800px" height="800px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="none" stroke="#000000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"  className="w-5 h-5">
                               <path d="m3.75 5.75v7.5h8.5v-7.5m-10.5 1.5 6.25-5.5l6.25 5.5"/>
@@ -172,6 +172,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                               <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/>
                             </svg>
                             <h6 className='hover:text-gray-900 ml-2'>Profissionais</h6>
+                          </div>
+                        </Link>
+                      </li>
+                      <li className="text-gray-700 hover:text-gray-900 px-9 py-2">
+                        <Link href="/configuracoes/especialidade">
+                          <div className='flex'>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                              <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/>
+                            </svg>
+                            <h6 className='hover:text-gray-900 ml-2'>Especialidades</h6>
+                          </div>
+                        </Link>
+                      </li>
+                      <li className="text-gray-700 hover:text-gray-900 px-9 py-2">
+                        <Link href="/configuracoes/orcamento">
+                          <div className='flex'>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                              <path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/>
+                            </svg>
+                            <h6 className='hover:text-gray-900 ml-2'>Orçamento</h6>
                           </div>
                         </Link>
                       </li>

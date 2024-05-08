@@ -42,6 +42,14 @@ const Cadastro = ({ estrutura = null, dadosPreenchidos = null, setDadosPreenchid
     }));
   };
 
+  const alterarDate = (event) => {
+    const { name, checked } = event.target;
+    setDadosPreenchidos((prevData) => ({
+      ...prevData,
+      [name]: checked
+    }));
+  };
+
   return (
     <div>
       <form className="w-full pt-2 pb-2" onSubmit={handleSubmit}>
@@ -115,6 +123,23 @@ const Cadastro = ({ estrutura = null, dadosPreenchidos = null, setDadosPreenchid
                     </label>
                     <input
                       type="checkbox"
+                      id={e.chave}
+                      name={e.chave}
+                      className="mt-1 p-2 w-full border rounded-md"
+                      checked={dadosPreenchidos && dadosPreenchidos[e.chave] || false}
+                      onChange={alterarDate}
+                      disabled={e.bloqueado ? 'disabled' : null}
+                      required={e.obrigatorio ? 'required' : ''}
+                    />
+                  </>
+                )}
+                {e.tipo === "date" && (
+                  <>
+                    <label htmlFor={e.chave} className="block text-gray-700 uppercase">{e.nome}
+                      <samp className='text-red-500 ml-1' hidden={!e.obrigatorio}>*</samp>
+                    </label>
+                    <input
+                      type="date"
                       id={e.chave}
                       name={e.chave}
                       className="mt-1 p-2 w-full border rounded-md"

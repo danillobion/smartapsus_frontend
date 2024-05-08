@@ -26,7 +26,7 @@ const estrutura = {
       rodape:true,//rodape da tabela (booleano)
     },
     botoes:[ //links
-      // {nome: 'Adicionar', chave:'adicionar', bloqueado:false} //nome(string),chave(string),bloqueado(booleano)
+      {nome: 'Adicionar', chave:'adicionar', bloqueado:false} //nome(string),chave(string),bloqueado(booleano)
     ],
     colunas:[ //colunas da tabela
       {nome:"nome",chave:"nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true}, //nome(string),chave(string),tipo(text,select),selectOpcoes([{chave:string, valor:string}]),pesquisar(booleano)
@@ -35,15 +35,17 @@ const estrutura = {
       {nome:"grau dependência",chave:"grauDependencia",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
       {nome:"turno",chave:"turnoAtendimento",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
       {nome:"gerencia",chave:"gerenciaAtencaoBasica",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
-      {nome:"Cadastro",chave:"dataCriacao",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"data de criação",chave:"dataCriacao",tipo:"date",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"bairro",chave:"nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"cidade",chave:"cidade.nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"estado",chave:"cidade.estado.nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
       {nome:"ações",chave:"acoes",tipo:"button",selectOptions:null,sort:false,pesquisar:false},
     ],
     acoes_dropdown:[ //botão de acoes de cada registro
-      // {nome: 'Editar', chave:'editar'}, //nome(string),chave(string),bloqueado(booleano)
-      // {nome: 'Deletar', chave:'deletar'},
+      {nome: 'Editar', chave:'editar'}, //nome(string),chave(string),bloqueado(booleano)
+      {nome: 'Deletar', chave:'deletar'},
     ]
   }
-
 }
 
 const Lista = () => {
@@ -92,11 +94,11 @@ const Lista = () => {
   };
   // Função que redireciona para a tela adicionar
   const adicionarRegistro = () => {
-    router.push('/configuracoes/edit/undefined');
+    router.push('/configuracoes/'+estrutura.uri+'/editar/cadastro');
   };
   // Função que redireciona para a tela editar
   const editarRegistro = (item) => {
-    router.push('/configuracoes/edit/'+item.id);
+    router.push('/configuracoes/'+estrutura.uri+'/editar/'+item.id);
   };
   // Função que deleta um registro
   const deletarRegistro = async (item: Item) => {
@@ -129,7 +131,7 @@ const Lista = () => {
         } else {
           pesquisarRegistro();
           Swal.fire({
-            title: "Métrica deletada com sucesso",
+            title: "Unidade deletada com sucesso",
             icon: "success"
           });
         }
