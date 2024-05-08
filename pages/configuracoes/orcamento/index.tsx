@@ -8,14 +8,14 @@ import Swal from 'sweetalert2';
 
 const estrutura = {
 
-  uri:"cidade", //caminho base
+  uri:"orcamento", //caminho base
 
   cabecalho:{ //cabecalho da pagina
-    titulo:"Cidades",
+    titulo:"Orçamento",
     migalha:[
       {nome:'Mapa', link:'/'},
       {nome:'Configurações', link:null},
-      {nome:'Cidades', link:null},
+      {nome:'Orçamento', link:'/configuracoes/orcamento'},
     ]
   },
 
@@ -29,16 +29,18 @@ const estrutura = {
       {nome: 'Adicionar', chave:'adicionar', bloqueado:false} //nome(string),chave(string),bloqueado(booleano)
     ],
     colunas:[ //colunas da tabela
-      {nome:"nome",chave:"nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true}, //nome(string),chave(string),tipo(text,select),selectOpcoes([{chave:string, valor:string}]),pesquisar(booleano)
-      {nome:"código IBGE da cidade",chave:"idIBGE",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
-      {nome:"Estado",chave:"estado.nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"unidade",chave:"unidade",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"valor",chave:"valor",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"ano",chave:"ano",tipo:"number",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"detalhe do orçamento",chave:"detalhesOrcamento",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
       {nome:"ações",chave:"acoes",tipo:"button",selectOptions:null,sort:false,pesquisar:false},
     ],
     acoes_dropdown:[ //botão de acoes de cada registro
-      {nome: 'Editar', chave:'editar'},
+      {nome: 'Editar', chave:'editar'}, //nome(string),chave(string),bloqueado(booleano)
       {nome: 'Deletar', chave:'deletar'},
     ]
   }
+
 }
 
 const Lista = () => {
@@ -51,7 +53,7 @@ const Lista = () => {
         pesquisarRegistro(valor);
         break;
       case 'adicionar':
-        adicionarRegistro(valor);
+        adicionarRegistro();
         break;
       case 'editar':
         editarRegistro(valor);
@@ -87,16 +89,16 @@ const Lista = () => {
   };
   // Função que redireciona para a tela adicionar
   const adicionarRegistro = () => {
-    router.push('/configuracoes/areas/'+estrutura.uri+'/editar/cadastro');
-  };  
+    router.push('/configuracoes/orcamento/cadastro');
+  };
   // Função que redireciona para a tela editar
   const editarRegistro = (item) => {
-    router.push('/configuracoes/areas/'+estrutura.uri+'/editar/'+item.id);
+    router.push('/configuracoes/'+estrutura.uri+'/editar/'+item.id);
   };
   // Função que deleta um registro
   const deletarRegistro = async (item: Item) => {
     const confirmacao = await Swal.fire({
-      title: "Você deseja deletar a cidade ?",
+      title: "Você deseja deletar o orçamento " + item.nome + "?",
       text: "Essa ação não poderá ser desfeita",
       icon: "warning",
       showCancelButton: true,
@@ -124,7 +126,7 @@ const Lista = () => {
         } else {
           pesquisarRegistro();
           Swal.fire({
-            title: "Cidade deletada com sucesso",
+            title: "Orçamento deletado com sucesso",
             icon: "success"
           });
         }
@@ -134,8 +136,9 @@ const Lista = () => {
       }
     }
   };
+
   useEffect(() => {
-      chamarFuncao('pesquisar',null);
+    chamarFuncao('pesquisar',null);
   }, []);
 
   return (

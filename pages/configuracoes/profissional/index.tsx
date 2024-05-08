@@ -26,7 +26,7 @@ const estrutura = {
       rodape:true,//rodape da tabela (booleano)
     },
     botoes:[ //links
-      // {nome: 'Adicionar', chave:'adicionar', bloqueado:false} //nome(string),chave(string),bloqueado(booleano)
+      {nome: 'Adicionar', chave:'adicionar', bloqueado:false} //nome(string),chave(string),bloqueado(booleano)
     ],
     colunas:[ //colunas da tabela
       {nome:"nome",chave:"nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true}, //nome(string),chave(string),tipo(text,select),selectOpcoes([{chave:string, valor:string}]),pesquisar(booleano)
@@ -37,7 +37,7 @@ const estrutura = {
       {nome:"ações",chave:"acoes",tipo:"button",selectOptions:null,sort:false,pesquisar:false},
     ],
     acoes_dropdown:[ //botão de acoes de cada registro
-      // {nome: 'Editar', chave:'editar'}, //nome(string),chave(string),bloqueado(booleano)
+      {nome: 'Editar', chave:'editar'}, //nome(string),chave(string),bloqueado(booleano)
       {nome: 'Deletar', chave:'deletar'},
     ]
   }

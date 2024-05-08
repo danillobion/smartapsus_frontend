@@ -8,14 +8,14 @@ import Swal from 'sweetalert2';
 
 const estrutura = {
 
-  uri:"cidade", //caminho base
+  uri:"especialidade", //caminho base
 
   cabecalho:{ //cabecalho da pagina
-    titulo:"Cidades",
+    titulo:"Especialidades",
     migalha:[
       {nome:'Mapa', link:'/'},
       {nome:'Configurações', link:null},
-      {nome:'Cidades', link:null},
+      {nome:'Especialidades', link:null},
     ]
   },
 
@@ -30,8 +30,7 @@ const estrutura = {
     ],
     colunas:[ //colunas da tabela
       {nome:"nome",chave:"nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true}, //nome(string),chave(string),tipo(text,select),selectOpcoes([{chave:string, valor:string}]),pesquisar(booleano)
-      {nome:"código IBGE da cidade",chave:"idIBGE",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
-      {nome:"Estado",chave:"estado.nome",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
+      {nome:"código",chave:"codigo",tipo:"texto",selectOptions:null,sort:true,pesquisar:true},
       {nome:"ações",chave:"acoes",tipo:"button",selectOptions:null,sort:false,pesquisar:false},
     ],
     acoes_dropdown:[ //botão de acoes de cada registro
@@ -39,6 +38,7 @@ const estrutura = {
       {nome: 'Deletar', chave:'deletar'},
     ]
   }
+
 }
 
 const Lista = () => {
@@ -87,16 +87,16 @@ const Lista = () => {
   };
   // Função que redireciona para a tela adicionar
   const adicionarRegistro = () => {
-    router.push('/configuracoes/areas/'+estrutura.uri+'/editar/cadastro');
+    router.push('/configuracoes/'+estrutura.uri+'/editar/cadastro');
   };  
   // Função que redireciona para a tela editar
   const editarRegistro = (item) => {
-    router.push('/configuracoes/areas/'+estrutura.uri+'/editar/'+item.id);
+    router.push('/configuracoes/'+estrutura.uri+'/editar/'+item.id);
   };
   // Função que deleta um registro
   const deletarRegistro = async (item: Item) => {
     const confirmacao = await Swal.fire({
-      title: "Você deseja deletar a cidade ?",
+      title: "Você deseja deletar a especialidade?",
       text: "Essa ação não poderá ser desfeita",
       icon: "warning",
       showCancelButton: true,
@@ -124,7 +124,7 @@ const Lista = () => {
         } else {
           pesquisarRegistro();
           Swal.fire({
-            title: "Cidade deletada com sucesso",
+            title: "Especialidade deletada com sucesso",
             icon: "success"
           });
         }
