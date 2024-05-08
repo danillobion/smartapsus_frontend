@@ -1,44 +1,69 @@
-import React, { useState } from 'react';
-import { Polygon, Popup } from 'react-leaflet';
-import "@/app/globals.css";
+import React, { useEffect, useRef, useState } from 'react';
+import { GeoJSON, useMap, Popup } from 'react-leaflet';
+import L from 'leaflet';
+
+// Definição de cores para cada região
+const regionColors = {
+  Norte: '#A6D96A',
+  Nordeste: '#1C9099',
+  Sul: '#FC4E2A',
+  Sudeste: '#FEB24C',
+  'Centro-Oeste': '#FFFF33'
+};
 
 const Areas = ({ dados }) => {
-    const [popupContent, setPopupContent] = useState(null);
-    const [popupPosition, setPopupPosition] = useState(null);
+  const map = useMap();
+  const layerGroupRef = useRef(L.layerGroup());
+  const [popupContent, setPopupContent] = useState(null);
+  const [popupPosition, setPopupPosition] = useState(null);
 
-    const handleAreaClick = (event, dados) => {
-        setPopupContent(dados);
-        setPopupPosition(event.latlng);
-    };
-    const randomColor = () => {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    };
+  useEffect(() => {
+    layerGroupRef.current.clearLayers();
 
-    return (
-        <div>
-            {dados != undefined && dados != null && dados.map((area, index) => {
-                const cor = randomColor();
-                return (
-                    (area.shape ? (
-                        <Polygon
-                            key={index}
-                            positions={area.shape ? JSON.parse(area.shape) : null}
-                            color={cor}
-                            fillColor={cor}
-                            fillOpacity={0.5}
-                            eventHandlers={{
-                                click: (event) => handleAreaClick(event, area)
-                            }}
-                        />
-                    ): null)
-                );
-            })}
-            {popupContent && popupPosition && (
+    if (dados && dados.length > 0) {
+      dados.forEach(area => {
+        const geoJsonData = area.shape;
+        const areaColor = regionColors[area.nome] || (area.regiao && regionColors[area.regiao.nome]) || '#A6D96A';
+
+        const layer = L.geoJSON(geoJsonData, {
+          style: {
+            color: '#ffffff',
+            weight: 1,
+            fillColor: areaColor,
+            fillOpacity: 0.5
+          }
+        });
+
+        layer.on('click', (event) => {
+          map.fitBounds(layer.getBounds(), { padding: [50, 50] });
+          setTimeout(() => {  // Adicionar um pequeno atraso antes de mostrar o popup
+            setPopupContent({
+              nome: area.nome,
+              numeroUnidades: area.numeroUnidades,
+              numeroProfissionais: area.numeroProfissionais
+            });
+            setPopupPosition(event.latlng);
+          }, 300);  // 300 milissegundos de atraso
+        });
+
+        layerGroupRef.current.addLayer(layer);
+      });
+
+      if (!map.hasLayer(layerGroupRef.current)) {
+        map.addLayer(layerGroupRef.current);
+      }
+    }
+
+    return () => {
+      if (map.hasLayer(layerGroupRef.current)) {
+        map.removeLayer(layerGroupRef.current);
+      }
+    };
+  }, [map, dados]);
+
+  return (
+    <>
+      {popupContent && popupPosition && (
                 <Popup position={popupPosition} className='p-0 m-0'>
                     <div className='flex flex-col p-0 m-0' style={{width:'210px'}}>
                         <h6 className='p-3' style={{fontSize:'20px'}}>{popupContent.nome}</h6>
@@ -55,8 +80,9 @@ const Areas = ({ dados }) => {
                     </div>
                 </Popup>
             )}
-        </div>
-    );
+
+    </>
+  );
 };
 
 export default Areas;
